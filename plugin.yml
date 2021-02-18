@@ -5,4 +5,14 @@ version: 0.1.0
 api: [ 4.0.0 ]
 author: PresentKim
 description: Show particles as blocks grow
+
+commands:
+  growparticle:
+    description: On/off of grow particle
+    permission: growparticle.cmd
+
+permissions:
+  growparticle.cmd:
+    description: /growparticle command
+    default: true
 ...
