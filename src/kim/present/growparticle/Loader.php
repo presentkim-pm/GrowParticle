@@ -41,9 +41,6 @@ final class Loader extends PluginBase implements Listener{
     }
 
     protected function onDisable() : void{
-        if(empty($this->disablePlayers))
-            return;
-
         $dataFolder = $this->getDataFolder();
         if(!file_exists($dataFolder)){
             mkdir($dataFolder);
