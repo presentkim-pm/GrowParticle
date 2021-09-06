@@ -1,6 +1,6 @@
 --- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/PresentKim/GrowParticle
 branches:
-  - main
+  - pm4.0.0
 projects:
   GrowParticle:
     lint:
