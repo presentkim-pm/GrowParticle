@@ -50,8 +50,8 @@ use function json_encode;
 use function mkdir;
 
 final class Loader extends PluginBase implements Listener{
-    /** @var bool[] (string) xuid => true, List of grow particle disable */
-    private array $disablePlayers = [];
+    /** @var array<string, true>|null (string) xuid => true, List of grow particle disable */
+    private ?array $disablePlayers = null;
 
     protected function onEnable() : void{
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
@@ -78,6 +78,9 @@ final class Loader extends PluginBase implements Listener{
     }
 
     protected function onDisable() : void{
+        if($this->disablePlayers === null){
+            return; //To avoid data initialization that occurs when a load fails
+        }
         $dataFolder = $this->getDataFolder();
         if(!file_exists($dataFolder)){
             mkdir($dataFolder);
