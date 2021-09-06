@@ -1,12 +1,12 @@
-name : Build Artifact
+name : Create GitHub draft release
 
 on :
   push :
 
 jobs :
-  build :
-    name : Build Artifact
-    if : "!startsWith(github.event.head_commit.message, 'version :')"
+  draft :
+    name : Create GitHub draft release
+    if : "startsWith(github.event.head_commit.message, 'version :')"
     runs-on : ubuntu-20.04
     strategy :
       fail-fast : false
@@ -22,24 +22,17 @@ jobs :
 
       - name : Prepare
         run : |
-          BUILD_NUMBER=${{ github.run_number }}
           SOURCE_DIR=${{ github.workspace }}
           BUILD_DIR=${HOME}/build
           PLUGIN_NAME=$(grep -oP '(?<=name\: )([^\n \t]+)' ${SOURCE_DIR}/plugin.yml)
           PLUGIN_VERSION=$(grep -oP '(?<=version\: )([^\n \t]+)' ${SOURCE_DIR}/plugin.yml)
-          ARTIFACT_FILE=${SOURCE_DIR}/${PLUGIN_NAME}_v${PLUGIN_VERSION}-Build${BUILD_NUMBER}.phar
+          ARTIFACT_FILE=${SOURCE_DIR}/${PLUGIN_NAME}_v${PLUGIN_VERSION}.phar
 
           echo "SOURCE_DIR=${SOURCE_DIR}" >> $GITHUB_ENV
           echo "BUILD_DIR=${BUILD_DIR}" >> $GITHUB_ENV
           echo "PLUGIN_NAME=${PLUGIN_NAME}" >> $GITHUB_ENV
           echo "PLUGIN_VERSION=${PLUGIN_VERSION}" >> $GITHUB_ENV
-          echo "BUILD_NUMBER=${BUILD_NUMBER}" >> $GITHUB_ENV
           echo "ARTIFACT_FILE=${ARTIFACT_FILE}" >> $GITHUB_ENV
-
-      - name : Append build number into version
-        run : |
-          INFO_PATH=${{ env.SOURCE_DIR }}/plugin.yml
-          sed -i -E "s/version\: [0-9]+\.[0-9]+\.[0-9]+/\0-BUILD${{ env.BUILD_NUMBER }}/g" ${INFO_PATH}
 
       - name : Build plugin
         run : |
@@ -50,21 +43,14 @@ jobs :
           wget -O ${BUILD} https://raw.githubusercontent.com/pmmp/DevTools/master/src/DevTools/ConsoleScript.php
           php -dphar.readonly=0 ${BUILD} --make ${{ env.SOURCE_DIR }} --out ${{ env.ARTIFACT_FILE }}
 
-      - name : Upload plugin source
-        uses : actions/upload-artifact@v2
+      - name : Creaft draft release
+        uses : ncipollo/release-action@v1.8.6
         with :
-          name : ${{ env.PLUGIN_NAME }}-source${{ env.BUILD_NUMBER }}
-          path : |
-            ${{ env.SOURCE_DIR }}
-            !${{ env.ARTIFACT_FILE }}
-            !**/.*/*
-            !**/.*
-
-      - name : Upload plugin phar
-        uses : actions/upload-artifact@v2
-        with :
-          name : ${{ env.PLUGIN_NAME }}-build${{ env.BUILD_NUMBER }}
-          path : |
-            ${{ env.ARTIFACT_FILE }}
-            ${{ env.SOURCE_DIR }}/*.md
-            ${{ env.SOURCE_DIR }}/LICENSE*
+          artifacts : ${{ env.ARTIFACT_FILE }}
+          commit : ${{ github.sha }}
+          draft : true
+          name : v${{ env.PLUGIN_VERSION }}
+          tag : ${{ env.PLUGIN_VERSION }}
+          token : ${{ secrets.GITHUB_TOKEN }}
+          body : |
+            **${{ env.PLUGIN_NAME }} v${{ env.PLUGIN_VERSION }}** released!
