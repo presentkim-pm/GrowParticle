@@ -50,10 +50,14 @@ use function json_encode;
 use function mkdir;
 
 final class GrowParticle extends PluginBase implements Listener{
+    use SingletonTrait;
 
     /** @var array<string, true>|null (string) xuid => true, List of grow particle disable */
     private ?array $disablePlayers = null;
 
+    protected function onLoad() : void{
+        self::$instance = $this;
+    }
 
     protected function onEnable() : void{
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
