@@ -49,7 +49,7 @@ use function json_decode;
 use function json_encode;
 use function mkdir;
 
-final class Loader extends PluginBase implements Listener{
+final class GrowParticle extends PluginBase implements Listener{
     /** @var array<string, true>|null (string) xuid => true, List of grow particle disable */
     private ?array $disablePlayers = null;
 
@@ -95,7 +95,11 @@ final class Loader extends PluginBase implements Listener{
         }
     }
 
-    /** @priority MONITOR */
+    /**
+     * @priority MONITOR
+     *
+     * @internal
+     */
     public function onBlockGrow(BlockGrowEvent $event) : void{
         $block = $event->getBlock();
         $pos = $block->getPos();
@@ -111,7 +115,11 @@ final class Loader extends PluginBase implements Listener{
         }
     }
 
-    /** @param string[] $args */
+    /**
+     * @param string[] $args
+     *
+     * @internal
+     */
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if(!$sender instanceof Player){
             $sender->sendMessage(TextFormat::RED . "It can only be used in-game");

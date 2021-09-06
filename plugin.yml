@@ -1,6 +1,6 @@
 ---
 name: GrowParticle
-main: kim\present\growparticle\Loader
+main: kim\present\growparticle\GrowParticle
 version: 0.1.0
 api: [ 4.0.0 ]
 author: PresentKim
