@@ -1,4 +1,5 @@
-<?php
+<?php /**  */
+/**  */
 
 /**
  *  ____                           _   _  ___
@@ -20,11 +21,9 @@
  *  ( . .) ♥
  *  c(")(")
  *
- * @noinspection PhpIllegalPsrClassPathInspection
- * @noinspection PhpDocSignatureInspection
- * @noinspection PhpDocMissingReturnTagInspection
  * @noinspection SpellCheckingInspection
- * @noinspection PhpUnusedParameterInspection
+ * @noinspection PhpUnused
+ * @noinspection PhpPureAttributeCanBeAddedInspection
  */
 
 declare(strict_types=1);
@@ -38,6 +37,7 @@ use pocketmine\event\Listener;
 use pocketmine\network\mcpe\protocol\SpawnParticleEffectPacket;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
+use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
 
 use function array_fill_keys;
@@ -50,8 +50,10 @@ use function json_encode;
 use function mkdir;
 
 final class GrowParticle extends PluginBase implements Listener{
+
     /** @var array<string, true>|null (string) xuid => true, List of grow particle disable */
     private ?array $disablePlayers = null;
+
 
     protected function onEnable() : void{
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
@@ -69,7 +71,7 @@ final class GrowParticle extends PluginBase implements Listener{
         if($contents !== false){
             $json = json_decode($contents, true);
             if(!is_array($json)){
-                $this->getLogger()->error("Failed to read data file ({$dataFile})");
+                $this->getLogger()->error("Failed to read data file ($dataFile)");
                 return;
             }
 
@@ -89,7 +91,7 @@ final class GrowParticle extends PluginBase implements Listener{
         $dataFile = $dataFolder . "disable_players.json";
         $ret = file_put_contents($dataFile, json_encode(array_keys($this->disablePlayers), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         if($ret === false){
-            $this->getLogger()->error("Failed to save data file ({$dataFile})");
+            $this->getLogger()->error("Failed to save data file ($dataFile)");
         }else{
             $this->disablePlayers = [];
         }
