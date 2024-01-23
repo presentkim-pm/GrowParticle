@@ -1,7 +1,7 @@
 ---
 name: Main
 main: kim\present\growparticle\GrowParticle
-version: 1.0.0
+version: 1.1.0
 api: [ 5.0.0 ]
 author: PresentKim
 description: Show particles as blocks grow
