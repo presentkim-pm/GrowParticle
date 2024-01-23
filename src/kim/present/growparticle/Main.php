@@ -38,7 +38,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
 
-final class GrowParticle extends PluginBase implements Listener{
+final class Main extends PluginBase implements Listener{
     use SingletonTrait;
 
     /**

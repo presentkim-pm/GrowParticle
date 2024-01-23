@@ -1,5 +1,5 @@
 ---
-name: GrowParticle
+name: Main
 main: kim\present\growparticle\GrowParticle
 version: 1.0.0
 api: [ 5.0.0 ]
