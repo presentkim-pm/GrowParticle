@@ -38,19 +38,13 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
 
-use function array_fill_keys;
-use function file_exists;
-use function file_get_contents;
-use function file_put_contents;
-use function is_array;
-use function json_decode;
-use function json_encode;
-use function mkdir;
-
 final class GrowParticle extends PluginBase implements Listener{
     use SingletonTrait;
 
-    /** @var array<string, true>|null (string) xuid => true, List of grow particle disable */
+    /**
+     * @var true[]
+     * @var array<string, true>|null (string) xuid => true, List of grow particle disable
+     */
     private ?array $disablePlayers = null;
 
     protected function onLoad() : void{
@@ -99,11 +93,7 @@ final class GrowParticle extends PluginBase implements Listener{
         }
     }
 
-    /**
-     * @priority MONITOR
-     *
-     * @internal
-     */
+    /** @priority MONITOR */
     public function onBlockGrow(BlockGrowEvent $event) : void{
         $block = $event->getBlock();
         $pos = $block->getPosition();
@@ -119,11 +109,7 @@ final class GrowParticle extends PluginBase implements Listener{
         }
     }
 
-    /**
-     * @param string[] $args
-     *
-     * @internal
-     */
+    /** @param string[] $args */
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if(!$sender instanceof Player){
             $sender->sendMessage(TextFormat::RED . "It can only be used in-game");
