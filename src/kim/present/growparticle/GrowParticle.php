@@ -108,7 +108,7 @@ final class GrowParticle extends PluginBase implements Listener{
      */
     public function onBlockGrow(BlockGrowEvent $event) : void{
         $block = $event->getBlock();
-        $pos = $block->getPos();
+        $pos = $block->getPosition();
 
         $pk = new SpawnParticleEffectPacket();
         $pk->position = $pos->add(0.5, 0, 0.5);
