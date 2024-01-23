@@ -21,9 +21,7 @@
  *  ( . .) ♥
  *  c(")(")
  *
- * @noinspection SpellCheckingInspection
  * @noinspection PhpUnused
- * @noinspection PhpPureAttributeCanBeAddedInspection
  */
 
 declare(strict_types=1);
